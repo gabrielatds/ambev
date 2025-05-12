@@ -7,10 +7,10 @@ public class OrderValidator : AbstractValidator<Order>
 {
     public OrderValidator()
     {
-        RuleFor(order => order.OrderNumber)
+        RuleFor(order => order.Number)
             .GreaterThan(0).WithMessage("Order number must be greater than 0.");
         
-        RuleFor(order => order.OrderDate)
+        RuleFor(order => order.Date)
             .NotEmpty().WithMessage("Order date is required.")
             .LessThanOrEqualTo(DateTime.Now).WithMessage("Order date cannot be in the future.");
 
@@ -32,7 +32,7 @@ public class OrderValidator : AbstractValidator<Order>
             .NotEmpty().WithMessage("At least one order item is required.")
             .Must(items => items.All(item => item.Quantity > 0)).WithMessage("Each order item must have a quantity greater than 0.");
 
-        RuleFor(order => order.Cancelled)
+        RuleFor(order => order.IsCancelled)
             .Equal(false).WithMessage("Order cannot be cancelled at creation.");
     }
 }

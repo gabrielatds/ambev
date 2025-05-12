@@ -2,20 +2,17 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 public sealed class Money : IEquatable<Money>
 {
-    public decimal Amount { get; }
-    public string Currency { get; }
-
-    public static readonly Money Zero = new(0, "USD");
+    public decimal Amount { get; set; }
+    public string Currency { get; set; } = string.Empty;
 
     public Money(decimal amount, string currency)
     {
-        if (amount < 0)
-            throw new ArgumentException("Amount cannot be negative", nameof(amount));
-        if (string.IsNullOrWhiteSpace(currency))
-            throw new ArgumentException("Currency is required", nameof(currency));
-
         Amount = decimal.Round(amount, 2, MidpointRounding.AwayFromZero);
         Currency = currency.ToUpperInvariant();
+    }
+
+    public Money()
+    {
     }
 
     public Money Add(Money other)

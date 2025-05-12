@@ -21,7 +21,7 @@ public class Product : BaseEntity
     /// Gets the product price.
     /// Must be a valid monetary value.
     /// </summary>
-    public Money Price { get; private set; }
+    public virtual Money Price { get; private set; }
 
     /// <summary>
     /// Gets the product description.
@@ -45,7 +45,7 @@ public class Product : BaseEntity
     /// Gets the rating info (rate and count).
     /// Must be a valid value object.
     /// </summary>
-    public Rating Rating { get; private set; }
+    public virtual Rating Rating { get; private set; }
 
     /// <summary>
     /// Creates a new product instance.
@@ -64,8 +64,10 @@ public class Product : BaseEntity
         Category = category;
         Image = image;
         Rating = rating;
+    }
 
-        Validate();
+    public Product()
+    {
     }
 
     /// <summary>

@@ -20,7 +20,7 @@ public class Customer : BaseEntity
     /// Gets the customer's address.
     /// Must be a valid Address value object.
     /// </summary>
-    public Address Address { get; private set; }
+    public virtual Address Address { get; private set; }
 
     /// <summary>
     /// Gets the customer's email address.
@@ -36,6 +36,10 @@ public class Customer : BaseEntity
         Email = email;
 
         Validate();
+    }
+
+    public Customer()
+    {
     }
 
     /// <summary>

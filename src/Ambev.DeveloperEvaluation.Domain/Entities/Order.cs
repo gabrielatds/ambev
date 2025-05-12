@@ -6,7 +6,7 @@ using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 /// <summary>
-/// Represents a Order in the system with Customer and Branch information
+/// Represents an Order in the system with Customer and Branch information
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
 public class Order : BaseEntity
@@ -15,13 +15,13 @@ public class Order : BaseEntity
     /// Gets the order's number.
     /// Must not be greater than 0.
     /// </summary>
-    public long OrderNumber { get; private set; }
+    public long Number { get; private set; }
     
     /// <summary>
     /// Gets the order's creation date.
     /// Must not be a future date.
     /// </summary>
-    public DateTime OrderDate { get; private set; }
+    public DateTime Date { get; private set; }
     
     /// <summary>
     /// Gets the order's customer id;
@@ -51,7 +51,7 @@ public class Order : BaseEntity
     /// Gets the order's current status.
     /// Indicates whether the order is Cancelled/Not Cancelled.
     /// </summary>
-    public bool Cancelled { get; private set; } = false;
+    public bool IsCancelled { get; private set; } = false;
 
     /// <summary>
     /// Gets the order's items.
@@ -59,17 +59,14 @@ public class Order : BaseEntity
     /// </summary>
     public List<OrderItem> Items { get; private set; } = new List<OrderItem>();
 
-    // Constructor to ensure the object is valid when created
-    public Order(long orderNumber, DateTime orderDate, Guid customerId, string customerName, Guid branchId, string branchName)
-    {
-        OrderNumber = orderNumber;
-        OrderDate = orderDate;
-        CustomerId = customerId;
-        CustomerName = customerName;
-        BranchId = branchId;
-        BranchName = branchName;
 
-        Validate();
+    public Order()
+    {
+    }
+
+    public void SetCurrentDate()
+    {
+        this.Date = DateTime.Now;
     }
 
     /// <summary>
@@ -77,7 +74,7 @@ public class Order : BaseEntity
     /// </summary>
     public void Cancel()
     {
-        this.Cancelled = true;
+        this.IsCancelled = true;
     }
 
     /// <summary>
@@ -86,7 +83,7 @@ public class Order : BaseEntity
     /// <returns></returns>
     public Money TotalAmount()
     {
-        var total = Items.Aggregate(Money.Zero, (sum, item) => sum.Add(item.UnitPrice));
+        var total = Items.Aggregate(new Money(0, "USD"), (sum, item) => sum.Add(item.TotalAmount()));
         return total;
     }
     

@@ -9,13 +9,12 @@ public sealed class Rating : IEquatable<Rating>
 
     public Rating(double rate, int count)
     {
-        if (rate < 0 || rate > 5)
-            throw new ArgumentOutOfRangeException(nameof(rate), "Rate must be between 0 and 5.");
-        if (count < 0)
-            throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
-
-        Rate = Math.Round(rate, 2); // Round for consistency
+        Rate = Math.Round(rate, 2);
         Count = count;
+    }
+
+    public Rating()
+    {
     }
 
     public override string ToString() => $"{Rate} stars ({Count} ratings)";

@@ -20,7 +20,7 @@ public class Branch : BaseEntity
     /// Gets the address of the branch.
     /// Must be a valid Address value object.
     /// </summary>
-    public Address Address { get; private set; }
+    public virtual Address Address { get; private set; }
 
     // Constructor ensures the entity is valid upon creation
     public Branch(string name, Address address)
@@ -29,6 +29,10 @@ public class Branch : BaseEntity
         Address = address;
 
         Validate();
+    }
+
+    public Branch()
+    {
     }
 
     /// <summary>

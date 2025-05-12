@@ -21,11 +21,14 @@ public class Program
             Log.Information("Starting web application");
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            
             builder.AddDefaultLogging();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-
+ 
             builder.AddBasicHealthChecks();
             builder.Services.AddSwaggerGen();
 

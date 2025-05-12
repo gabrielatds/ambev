@@ -21,13 +21,6 @@ public sealed class Address : IEquatable<Address>
         string postalCode,
         string country)
     {
-        if (string.IsNullOrWhiteSpace(street)) throw new ArgumentException("Street is required.");
-        if (string.IsNullOrWhiteSpace(number)) throw new ArgumentException("Number is required.");
-        if (string.IsNullOrWhiteSpace(city)) throw new ArgumentException("City is required.");
-        if (string.IsNullOrWhiteSpace(state)) throw new ArgumentException("State is required.");
-        if (string.IsNullOrWhiteSpace(postalCode)) throw new ArgumentException("Postal code is required.");
-        if (string.IsNullOrWhiteSpace(country)) throw new ArgumentException("Country is required.");
-
         Street = street;
         Number = number;
         Complement = complement;
@@ -36,6 +29,10 @@ public sealed class Address : IEquatable<Address>
         State = state;
         PostalCode = postalCode;
         Country = country;
+    }
+
+    public Address()
+    {
     }
 
     public override string ToString()
