@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using AutoMapper;
 
@@ -14,5 +15,6 @@ public class GetOrderProfile : Profile
     public GetOrderProfile()
     {
         CreateMap<Order, GetOrderResult>();
+        CreateMap<OrderItem, OrderItemResult>();
     }
 }

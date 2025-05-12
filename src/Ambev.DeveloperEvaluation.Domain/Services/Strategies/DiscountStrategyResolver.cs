@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace Ambev.DeveloperEvaluation.Domain.Services.Strategies;
 
 public class DiscountStrategyResolver
@@ -18,7 +20,7 @@ public class DiscountStrategyResolver
     {
         var strategy = _strategies.Single(strategy => strategy.CanApply(quantity));
         if (strategy == null)
-            throw new DomainException("Invalid quantity. Max allowed: 20.");
+            throw new ValidationException("Invalid quantity. Max allowed: 20.");
         return strategy;
     }
 }

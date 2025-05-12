@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20250512165850_Add_Sales_Entities")]
-    partial class Add_Sales_Entities
+    [Migration("20250512201807_Add_Order_Entities")]
+    partial class Add_Order_Entities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,40 +24,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Branch", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Branches");
-                });
-
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Order", b =>
                 {
@@ -80,7 +46,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsCancelled")
                         .HasColumnType("boolean");
@@ -99,7 +65,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ProductId")
@@ -119,33 +85,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -154,7 +93,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -182,7 +121,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .HasColumnType("character varying(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -194,49 +133,53 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Branch", b =>
-                {
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<Guid>("BranchId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("BranchId");
-
-                            b1.ToTable("Branches");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BranchId");
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Customer", b =>
-                {
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.OrderItem", b =>
                 {
                     b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Order", null)
                         .WithMany("Items")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Money", "Discount", b1 =>
+                        {
+                            b1.Property<Guid>("OrderItemId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("OrderItemId");
+
+                            b1.ToTable("OrderItems");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
+                        });
+
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Money", "TotalAmount", b1 =>
+                        {
+                            b1.Property<Guid>("OrderItemId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("OrderItemId");
+
+                            b1.ToTable("OrderItems");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
+                        });
 
                     b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Money", "UnitPrice", b1 =>
                         {
@@ -258,49 +201,13 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                                 .HasForeignKey("OrderItemId");
                         });
 
+                    b.Navigation("Discount")
+                        .IsRequired();
+
+                    b.Navigation("TotalAmount")
+                        .IsRequired();
+
                     b.Navigation("UnitPrice")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
-                {
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Money", "Price", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Rating", "Rating", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Price")
-                        .IsRequired();
-
-                    b.Navigation("Rating")
                         .IsRequired();
                 });
 

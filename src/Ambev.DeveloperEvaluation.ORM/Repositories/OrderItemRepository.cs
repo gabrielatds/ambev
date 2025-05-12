@@ -41,7 +41,7 @@ public class OrderItemRepository : IOrderItemRepository
     /// <returns>The OrderItem if found, null otherwise</returns>
     public async Task<OrderItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.OrderItems.FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
+        return await _context.OrderItems.FirstOrDefaultAsync(orderItem=> orderItem.Id == id, cancellationToken);
     }
 
     /// <summary>

@@ -1,13 +1,13 @@
-using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Serilog;
 
 namespace Ambev.DeveloperEvaluation.Application.Orders.GetOrder;
 
 /// <summary>
-/// Handler for processing GetUserCommand requests
+/// Handler for processing GetOrderCommand requests
 /// </summary>
 public class GetOrderHandler : IRequestHandler<GetOrderCommand, GetOrderResult>
 {
@@ -30,21 +30,29 @@ public class GetOrderHandler : IRequestHandler<GetOrderCommand, GetOrderResult>
     /// <summary>
     /// Handles the GetOrderCommand request
     /// </summary>
-    /// <param name="request">The GetOrder command</param>
+    /// <param name="command">The GetOrder command</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The user details if found</returns>
-    public async Task<GetOrderResult> Handle(GetOrderCommand request, CancellationToken cancellationToken)
+    /// <returns>The order details if found</returns>
+    public async Task<GetOrderResult> Handle(GetOrderCommand command, CancellationToken cancellationToken)
+    {
+        Log.Information("Executing Handle for GetOrderCommand {command}", @command);
+        await ValidateCommandAsync(command, cancellationToken);
+
+        var order = await _orderRepository.GetByIdAsync(command.Id, cancellationToken);
+        if (order == null)
+            throw new ValidationException($"Order with ID {command.Id} not found");
+        
+        Log.Information($"Order retrieved successfully");
+
+        return _mapper.Map<GetOrderResult>(order);
+    }
+
+    private async Task ValidateCommandAsync(GetOrderCommand command, CancellationToken cancellationToken)
     {
         var validator = new GetOrderValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-
-        var order = await _orderRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (order == null)
-            throw new KeyNotFoundException($"Order with ID {request.Id} not found");
-
-        return _mapper.Map<GetOrderResult>(order);
     }
 }

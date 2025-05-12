@@ -41,7 +41,8 @@ public class OrderRepository : IOrderRepository
     /// <returns>The Order if found, null otherwise</returns>
     public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
+        return await _context.Orders.Include(order => order.Items)
+                                    .FirstOrDefaultAsync(order=> order.Id == id, cancellationToken);
     }
     
     /// <summary>
@@ -52,7 +53,7 @@ public class OrderRepository : IOrderRepository
     /// <returns>The Order if found, null otherwise</returns>
     public async Task<Order?> GetByOrderNumberAsync(long orderNumber, CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.FirstOrDefaultAsync(o=> o.Number == orderNumber, cancellationToken);
+        return await _context.Orders.FirstOrDefaultAsync(order=> order.Number == orderNumber, cancellationToken);
     }
     
     /// <summary>

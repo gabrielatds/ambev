@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Ambev.DeveloperEvaluation.Common\Ambev.DeveloperEvaluation.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Exceptions\DomainException.cs" />
+  </ItemGroup>
+
 </Project>

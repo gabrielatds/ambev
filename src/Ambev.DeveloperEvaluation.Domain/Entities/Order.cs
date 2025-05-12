@@ -83,7 +83,7 @@ public class Order : BaseEntity
     /// <returns></returns>
     public Money TotalAmount()
     {
-        var total = Items.Aggregate(new Money(0, "USD"), (sum, item) => sum.Add(item.TotalAmount()));
+        var total = Items.Aggregate(new Money(0, "USD"), (sum, item) => sum.Add(item.TotalAmount));
         return total;
     }
     

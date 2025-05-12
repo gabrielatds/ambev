@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Services;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Serilog;
 
 namespace Ambev.DeveloperEvaluation.Application.Orders.CreateOrder;
 
@@ -38,23 +39,39 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, CreateOrde
     /// <returns>The created order details</returns>
     public async Task<CreateOrderResult> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        var validator = new CreateOrderCommandValidator();
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
-        var existingOrder = await _orderRepository.GetByOrderNumberAsync(command.OrderNumber, cancellationToken);
-        if (existingOrder != null)
-            throw new ValidationException($"Order with number {command.OrderNumber} already exists");
-
+        Log.Information("Executing Handle for CreateOrderCommand {command}", @command);
+        
+        await ValidateCommandAsync(command, cancellationToken);
+        
         var order = _mapper.Map<Order>(command);
         order.SetCurrentDate();
 
         _orderService.ApplyDiscounts(order.Items);
         
+        Log.Information("Creating order {order}", @order);
         var createdOrder = await _orderRepository.CreateAsync(order, cancellationToken);
         var result = _mapper.Map<CreateOrderResult>(createdOrder);
+        
+        Log.Information($"Order created successfully with Id: {result.Id}");
         return result;
+    }
+
+    private async Task ValidateCommandAsync(CreateOrderCommand command, CancellationToken cancellationToken)
+    {
+        var validator = new CreateOrderCommandValidator();
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            Log.Error("Invalid order. Errors: {errors}", @validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
+        }
+            
+        var existingOrder = await _orderRepository.GetByOrderNumberAsync(command.OrderNumber, cancellationToken);
+        if (existingOrder != null)
+        {
+            Log.Error($"Order with number {command.OrderNumber} already exists");
+            throw new ValidationException($"Order with number {command.OrderNumber} already exists");
+        }
     }
 }
