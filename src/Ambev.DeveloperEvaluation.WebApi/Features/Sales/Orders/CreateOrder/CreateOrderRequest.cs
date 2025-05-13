@@ -6,7 +6,7 @@ public class CreateOrderRequest
     /// Gets the order's number.
     /// Must not be greater than 0.
     /// </summary>
-    public long OrderNumber { get; set; }
+    public long Number { get; set; }
     
     /// <summary>
     /// Gets the order's customer id;
@@ -36,5 +36,5 @@ public class CreateOrderRequest
     /// Gets the order's items.
     /// Must have at least one order item.
     /// </summary>
-    public List<OrderItemRequest> Items { get; set; }
+    public List<CreateOrderItemRequest> Items { get; set; }
 }

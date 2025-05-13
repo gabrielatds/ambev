@@ -1,20 +1,14 @@
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.GetOrder;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.CreateOrder;
 
-public class OrderItemResponse
+public class CreateOrderItemResponse
 {
     /// <summary>
     /// Gets the product id.
     /// Must be a valid GUID.
     /// </summary>
     public Guid ProductId { get; private set; }
-    
-    /// <summary>
-    /// Gets the order id.
-    /// Must be a valid GUID.
-    /// </summary>
-    public Guid OrderId { get; private set; }
     
     /// <summary>
     /// Gets the product title.
@@ -33,9 +27,4 @@ public class OrderItemResponse
     /// Must be greater than 0.
     /// </summary>
     public int Quantity { get; private set; }
-    
-    /// <summary>
-    /// Gets the order item total amount.
-    /// </summary>
-    public Money TotalAmount { get; set; }
 }

@@ -1,10 +1,8 @@
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.Application.Orders.CreateOrder;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.CreateOrder;
 
-public class OrderItemCommand
+public partial class CreateOrderItemRequest
 {
     /// <summary>
     /// Gets the product id.
@@ -29,15 +27,4 @@ public class OrderItemCommand
     /// Must be greater than 0.
     /// </summary>
     public int Quantity { get; set; }
-    
-    public ValidationResultDetail Validate()
-    {
-        var validator = new OrderItemCommandValidator();
-        var result = validator.Validate(this);
-        return new ValidationResultDetail
-        {
-            IsValid = result.IsValid,
-            Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
-        };
-    }
 }

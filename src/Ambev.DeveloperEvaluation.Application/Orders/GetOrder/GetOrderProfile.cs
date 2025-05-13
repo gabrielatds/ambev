@@ -15,6 +15,6 @@ public class GetOrderProfile : Profile
     public GetOrderProfile()
     {
         CreateMap<Order, GetOrderResult>();
-        CreateMap<OrderItem, OrderItemResult>();
+        CreateMap<OrderItem, GetOrderItemResult>();
     }
 }

@@ -26,6 +26,7 @@ public sealed class Money : IEquatable<Money>
         EnsureSameCurrency(other);
         if (Amount < other.Amount)
             throw new InvalidOperationException("Resulting amount cannot be negative");
+        
         return new Money(Amount - other.Amount, Currency);
     }
 

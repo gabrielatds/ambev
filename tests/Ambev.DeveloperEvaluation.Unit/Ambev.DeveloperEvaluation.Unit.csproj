@@ -38,4 +38,13 @@
 		<ProjectReference Include="..\..\src\Ambev.DeveloperEvaluation.ORM\Ambev.DeveloperEvaluation.ORM.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Domain\Entities\Users\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Application\Sales\TestData\DeleteOrderHandlerTestData.cs" />
+	  <Compile Remove="Application\Sales\TestData\GetOrderHandlerTestData.cs" />
+	</ItemGroup>
+
 </Project>

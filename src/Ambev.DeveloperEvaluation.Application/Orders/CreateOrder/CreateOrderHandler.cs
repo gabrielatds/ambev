@@ -67,11 +67,11 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, CreateOrde
             throw new ValidationException(validationResult.Errors);
         }
             
-        var existingOrder = await _orderRepository.GetByOrderNumberAsync(command.OrderNumber, cancellationToken);
+        var existingOrder = await _orderRepository.GetByOrderNumberAsync(command.Number, cancellationToken);
         if (existingOrder != null)
         {
-            Log.Error($"Order with number {command.OrderNumber} already exists");
-            throw new ValidationException($"Order with number {command.OrderNumber} already exists");
+            Log.Error($"Order with number {command.Number} already exists");
+            throw new ValidationException($"Order with number {command.Number} already exists");
         }
     }
 }

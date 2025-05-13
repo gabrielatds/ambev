@@ -1,9 +1,14 @@
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.Application.Orders.GetOrder;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.GetOrder;
 
-public class OrderItemResult
+public class GetOrderItemResponse
 {
+    /// <summary>
+    /// Gets the order item's unique id.
+    /// </summary>
+    public Guid Id { get; set; }
+    
     /// <summary>
     /// Gets the product id.
     /// Must be a valid GUID.

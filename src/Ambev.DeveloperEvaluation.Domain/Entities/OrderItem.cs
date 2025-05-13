@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.Domain.Validation.Sales;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
@@ -12,36 +13,36 @@ public class OrderItem : BaseEntity
     /// Gets the product id.
     /// Must be a valid GUID.
     /// </summary>
-    public Guid ProductId { get; private set; }
+    public Guid ProductId { get; set; }
     
     /// <summary>
     /// Gets the order id.
     /// Must be a valid GUID.
     /// </summary>
-    public Guid OrderId { get; private set; }
+    public Guid OrderId { get; set; }
     
     /// <summary>
     /// Gets the product title.
     /// Must not exceed 100 characters.
     /// </summary>
-    public string ProductTitle { get; private set; }
+    public string ProductTitle { get; set; }
     
     /// <summary>
     /// Gets the product unit price.
     /// Must not be null.
     /// </summary>
-    public Money UnitPrice { get; private set; }
+    public Money UnitPrice { get; set; }
     
     /// <summary>
     /// Gets the order item discount value.
     /// </summary>
-    public Money Discount { get; private set; }
+    public Money Discount { get; set; }
     
     /// <summary>
     /// Gets the product quantity.
     /// Must be greater than 0.
     /// </summary>
-    public int Quantity { get; private set; }
+    public int Quantity { get; set; }
     
     /// <summary>
     /// Gets the order item total amount.
@@ -60,30 +61,6 @@ public class OrderItem : BaseEntity
 
     public OrderItem()
     {
-    }
-
-    public void IncreaseQuantity(int amount)
-    {
-        if (amount <= 0)
-            throw new ValidationException("Amount must be greater than zero.");
-
-        Quantity += amount;
-    }
-
-    /// <summary>
-    /// Removes an 
-    /// </summary>
-    /// <param name="amount"></param>
-    /// <exception cref="ValidationException"></exception>
-    public void DecreaseQuantity(int amount)
-    {
-        if (amount <= 0)
-            throw new ValidationException("Amount must be greater than zero.");
-
-        if (amount > Quantity)
-            throw new ValidationException("Cannot decrease more than the existing quantity.");
-
-        Quantity -= amount;
     }
 
     /// <summary>
@@ -119,7 +96,7 @@ public class OrderItem : BaseEntity
     /// <list type="bullet">Branch name length</list>
     /// <list type="bullet">Total of items</list>
     /// </remarks>
-    private ValidationResultDetail Validate()
+    public ValidationResultDetail Validate()
     {
         var validator = new OrderItemValidator();
         var result = validator.Validate(this);

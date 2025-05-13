@@ -17,6 +17,6 @@ public class GetOrderProfile : Profile
             .ConstructUsing(id => new GetOrderCommand(id));
 
         CreateMap<GetOrderResult, GetOrderResponse>();
-        CreateMap<OrderItemResult, OrderItemResponse>();
+        CreateMap<GetOrderItemResult, GetOrderItemResponse>();
     }
 }

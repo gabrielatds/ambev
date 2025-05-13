@@ -1,8 +1,8 @@
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.CreateOrder;
+namespace Ambev.DeveloperEvaluation.Application.Orders.CreateOrder;
 
-public class OrderItemRequest
+public class CreateOrdemItemResult
 {
     /// <summary>
     /// Gets the product id.

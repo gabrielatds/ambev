@@ -25,7 +25,7 @@ public class CreateOrderCommand : IRequest<CreateOrderResult>
     /// Gets the order's number.
     /// Must not be greater than 0.
     /// </summary>
-    public long OrderNumber { get; set; }
+    public long Number { get; set; }
     
     /// <summary>
     /// Gets the order's customer id;
@@ -55,7 +55,7 @@ public class CreateOrderCommand : IRequest<CreateOrderResult>
     /// Gets the order's items.
     /// Must have at least one order item.
     /// </summary>
-    public List<OrderItemCommand> Items { get; set; }
+    public List<CreateOrderItemCommand> Items { get; set; }
 
     public ValidationResultDetail Validate()
     {

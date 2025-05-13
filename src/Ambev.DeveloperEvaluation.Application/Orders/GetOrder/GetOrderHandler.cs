@@ -40,14 +40,14 @@ public class GetOrderHandler : IRequestHandler<GetOrderCommand, GetOrderResult>
 
         var order = await _orderRepository.GetByIdAsync(command.Id, cancellationToken);
         if (order == null)
-            throw new ValidationException($"Order with ID {command.Id} not found");
+            throw new KeyNotFoundException($"Order with ID {command.Id} not found");
         
         Log.Information($"Order retrieved successfully");
 
         return _mapper.Map<GetOrderResult>(order);
     }
 
-    private async Task ValidateCommandAsync(GetOrderCommand command, CancellationToken cancellationToken)
+    private static async Task ValidateCommandAsync(GetOrderCommand command, CancellationToken cancellationToken)
     {
         var validator = new GetOrderValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);

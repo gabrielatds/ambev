@@ -17,7 +17,7 @@ public class CreateOrderProfile : Profile
         CreateMap<CreateOrderRequest, CreateOrderCommand>();
         CreateMap<CreateOrderResult, CreateOrderResponse>();
         
-        CreateMap<OrderItemRequest, OrderItemCommand>();
-        CreateMap<OrderItemResult, OrderItemResponse>();
+        CreateMap<CreateOrderItemRequest, CreateOrderItemCommand>();
+        CreateMap<CreateOrdemItemResult, CreateOrderItemResponse>();
     }
 }

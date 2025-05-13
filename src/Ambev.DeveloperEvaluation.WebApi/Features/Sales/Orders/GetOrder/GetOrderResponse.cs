@@ -8,6 +8,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.GetOrder;
 public class GetOrderResponse
 {
     /// <summary>
+    /// Gets the order's unique id.
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
     /// Gets the order's number.
     /// Must not be greater than 0.
     /// </summary>
@@ -53,5 +58,5 @@ public class GetOrderResponse
     /// Gets the order's items.
     /// Must have at least one order item.
     /// </summary>
-    public List<OrderItemResponse> Items { get; private set; } = new List<OrderItemResponse>();
+    public List<GetOrderItemResponse> Items { get; private set; } = new List<GetOrderItemResponse>();
 }

@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.Orders.CreateOrder;
+namespace Ambev.DeveloperEvaluation.Application.Orders.CreateOrder;
 
-public class OrderItemRequestValidator : AbstractValidator<OrderItemRequest>
+public class CreateOrderItemCommandValidator : AbstractValidator<CreateOrderItemCommand>
 {
-    public OrderItemRequestValidator()
+    public CreateOrderItemCommandValidator()
     {
         RuleFor(orderItem => orderItem.ProductId)
             .NotEmpty()
@@ -22,6 +22,6 @@ public class OrderItemRequestValidator : AbstractValidator<OrderItemRequest>
 
         RuleFor(orderItem => orderItem.Quantity)
             .GreaterThan(0)
-            .WithMessage("Quantity must be greater than zero."); 
+            .WithMessage("Quantity must be greater than zero.");
     }
 }

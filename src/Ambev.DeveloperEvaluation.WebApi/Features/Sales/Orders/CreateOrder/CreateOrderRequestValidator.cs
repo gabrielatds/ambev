@@ -5,7 +5,7 @@ public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
 {
     public CreateOrderRequestValidator()
     {
-        RuleFor(order => order.OrderNumber)
+        RuleFor(order => order.Number)
             .GreaterThan(0).WithMessage("Order number must be greater than 0.");
         
         RuleFor(order => order.CustomerId)
@@ -26,6 +26,6 @@ public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
             .NotEmpty().WithMessage("At least one order item is required.")
             .Must(items => items.All(item => item.Quantity > 0)).WithMessage("Each order item must have a quantity greater than 0.");
         
-        // RuleForEach(order => order.Items).SetValidator(new OrderItemRequestValidator());
+        RuleForEach(order => order.Items).SetValidator(new CreateOrderItemRequestValidator());
     }
 }
